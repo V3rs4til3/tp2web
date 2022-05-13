@@ -3,6 +3,7 @@ dbdata
 coverage
 accept
 src/vendor
+.idea
 src/acceptation.php
 src/dashboard.php
 src/mathematique.php
