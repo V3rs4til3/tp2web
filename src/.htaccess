@@ -1,4 +1,25 @@
+<Files *.php>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files index.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+<Files error.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+ErrorDocument 403 "http://localhost/src/home/error"
+ErrorDocument 404 "http://localhost/src/home/error"
+ErrorDocument 500 "http://localhost/src/home/error"
+
 RewriteEngine On
+Options -Indexes
+IndexIgnore *
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L]

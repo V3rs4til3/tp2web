@@ -35,6 +35,16 @@ if(!$_SERVER['SERVER_NAME'] == 'localhost'){
     }
 }
 
+if(isset($_COOKIE['authentification'])){
+    $user = new \models\usermodel();
+    $userrepo = new \repositories\userrepositorie;
+    $user = $userrepo->getUserAuthByToken($_COOKIE['authentification']);
+    if($user){
+        $_SESSION['user'] = $user;
+    }
+}
+
+
 $uri = $_SERVER['REQUEST_URI'];
 $uri = substr($uri, 1);
 $parts = explode('/', $uri);

@@ -29,8 +29,6 @@ class security {
      *
      * Authentification:
      * Confirmation de l'ancien mot de passe lorsqu'un utilisateur connecté change son mot de passe
-     * Permettre de "Se souvenir de moi"
-     * Déconnexion sécuritaire
      * Ne pas permettre le recensement des utilisateurs
      * Protection contre le SSRF
      * Journaliser les informations concernant les achats
@@ -58,6 +56,8 @@ class security {
      * Complexité minimal du mot de passe
      * Mot de passe hashé et salé
      * Modifier l'ID de session à la connexion et "une fois de temps en temps"
+     * Permettre de "Se souvenir de moi"
+     * Déconnexion sécuritaire
      */
 
 }

@@ -12,9 +12,17 @@
                 </ul>
             </div>
 
-            <div class="col-md-2 text-end">
-                <a class="btn btn-primary" href="<?= HOME_PATH ?>/User/ViewConnect" role="button">Connexion</a>
-                <a class="btn btn-primary" href="<?= HOME_PATH ?>/User/ViewCreate" role="button">Creer</a>
+                <?php if (isset($_SESSION['user'])) { ?>
+            <div class="col-md-3 text-end">
+                    <a class="pr-4" href="<?= HOME_PATH ?>/market/sell">Vendre</a>
+                    <a class="pr-4" href="<?= HOME_PATH ?>/market/buy">Mes achats</a>
+                    <a class="pr-4" href="<?= HOME_PATH ?>/user/mdp">Mot de pass</a>
+                    <a class="btn btn-primary" href="<?= HOME_PATH ?>/user/Disconnect">Déconnexion</a>
+                <?php } else { ?>
+                <div class="col-md-2 text-end">
+                    <a class="btn btn-primary" href="<?= HOME_PATH ?>/User/ViewConnect" role="button">Connexion</a>
+                    <a class="btn btn-primary" href="<?= HOME_PATH ?>/User/ViewCreate" role="button">Creer</a>
+                <?php } ?>
             </div>
 
         </div>

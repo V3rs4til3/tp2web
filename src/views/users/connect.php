@@ -44,8 +44,14 @@
                 <label for="password" class="form-label">Mot de passe <a href="<?= HOME_PATH ?>/User/ViewForgotten"><sup>oublier?</sup></a> </label>
                 <input type="password" class="form-control" name="password" id="password"/>
             </div>
+            <div class="m-4 ml-5">
+                <input class="form-check-input" type="checkbox" name="remember" value="true" id="remember">
+                <label class="form-check-label" name="remember" for="remember">
+                    Se souvenir de moi (7 jours)
+                </label>
+            </div>
             <div class="m-4">
-                <button type="submit" class="btn btn-primary">Créer son compte</button>
+                <button type="submit" class="btn btn-primary">Connexion</button>
             </div>
         </form>
     </div>

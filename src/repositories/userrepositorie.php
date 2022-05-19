@@ -25,9 +25,9 @@ class userrepositorie {
         $query->execute();
     }
 
-    function getStatus(string $status): int {
-        $query = BD->prepare('SELECT id FROM status WHERE nomStatus = ?');
-        $query->bindValue(1, $status, \PDO::PARAM_STR);
+    function getStatus(int $status): string {
+        $query = BD->prepare('SELECT nomStatus FROM status WHERE id = ?');
+        $query->bindValue(1, $status, \PDO::PARAM_INT);
         $query->execute();
         $query->setFetchMode(\PDO::FETCH_COLUMN, 0);
         return $query->fetch();
@@ -41,9 +41,17 @@ class userrepositorie {
         return $query->fetch();
     }
 
+    function getUserAuthByToken(string $token): \models\usermodel|bool {
+        $query = BD->prepare('SELECT * FROM users WHERE authtoken = ?');
+        $query->bindValue(1, $token, \PDO::PARAM_STR);
+        $query->execute();
+        $query->setFetchMode(\PDO::FETCH_CLASS, "\models\usermodel");
+        return $query->fetch();
+    }
+
     function updateUser(\models\usermodel $user):void{
         $query = BD->prepare('UPDATE users SET username = ?, password = ?, email = ?, veriftoken = ? ,
-                 resettoken = ?, authtoken = ?, echeance = ? WHERE id = ?');
+                 resettoken = ?, authtoken = ?, echeance = ?, fk_status = ? WHERE id = ?');
         $query->bindValue(1, $user->username, \PDO::PARAM_STR);
         $query->bindValue(2, $user->password, \PDO::PARAM_STR);
         $query->bindValue(3, $user->email, \PDO::PARAM_STR);
@@ -51,7 +59,8 @@ class userrepositorie {
         $query->bindValue(5, $user->resettoken, \PDO::PARAM_STR);
         $query->bindValue(6, $user->authtoken, \PDO::PARAM_STR);
         $query->bindValue(7, $user->echeance, \PDO::PARAM_STR);
-        $query->bindValue(8, $user->id, \PDO::PARAM_INT);
+        $query->bindValue(8, $user->fk_status, \PDO::PARAM_INT);
+        $query->bindValue(9, $user->id, \PDO::PARAM_INT);
         $query->execute();
     }
 

@@ -7,7 +7,11 @@ use repositories\userrepositorie;
 use utils\log;
 class usercontroller
 {
-    function resetPassword(){
+    function createAuthToke(usermodel $user): void{
+        $user->authtoken = md5(uniqid(rand(), true));
+    }
+
+    function resetPassword(): void{
         if(isset($_POST['password']) && isset($_POST['verifications'])) {
             $user = $_SESSION['toReset'];
             if($_POST['password'] == $_POST['verifications']) {
@@ -120,15 +124,18 @@ class usercontroller
         $password = $_POST['password'];
 
         $userRepo = new userrepositorie();
-        $user = $userRepo->getOneUser( $username);
-
+        $user = $userRepo->getOneUser($username);
         if($username != '' && ctype_alnum($username)){
             if ($user) {
-
                 if (password_verify($password, $user->password)) {
-                    if ($user->status == 'actif') {
+                    if ($user->getStatus() == 'actif') {
+                        if(isset($_POST['remember']) && $_POST['remember'] == "true"){
+                            $this->createAuthToke($user);
+                            setcookie('authentification', $user->authtoken, time() + (604800), "/");
+                            $userRepo->updateUser($user);
+                        }
                         $_SESSION['user'] = $user;
-                        header('location: ' . HOME_PATH .  '/user/userhome');
+                        header('location: ' . HOME_PATH .  '/home/index');
                         die();
                     }
                     else
@@ -182,6 +189,10 @@ class usercontroller
     }
 
     function Disconnect():void{
+        $user = $_SESSION['user'];
+        $user->authtoken = '';
+        $userRepo = new userrepositorie();
+        $userRepo->updateUser($user);
         session_unset();
         session_destroy();
         header('location: ' . HOME_PATH .'/home/index');
@@ -190,7 +201,7 @@ class usercontroller
 
     function ViewConnect():void{
         if(isset($_SESSION['user'])){
-            header('location: ' . HOME_PATH .'/user/userhome');
+            header('location: ' . HOME_PATH .'/home/index');
             die();
         }
         else if(isset($_POST['username'])){
@@ -202,7 +213,7 @@ class usercontroller
 
     function ViewCreate():void{
         if(isset($_SESSION['user'])){
-            header('location: ' . HOME_PATH .'/user/userhome');
+            header('location: ' . HOME_PATH .'/home/index');
             die();
         }
         else if(isset($_POST['username'])){
@@ -214,7 +225,7 @@ class usercontroller
 
     function ViewForgotten():void{
         if(isset($_SESSION['user'])){
-            header('location: ' . HOME_PATH .'/user/userhome');
+            header('location: ' . HOME_PATH .'/home/index');
             die();
         }
         else if(isset($_POST['email'])){
@@ -238,7 +249,7 @@ class usercontroller
             die();
         }
         else if(isset($_SESSION['user'])){
-            header('location: ' . HOME_PATH .'/user/userhome');
+            header('location: ' . HOME_PATH .'/home/index');
             die();
         }
 
